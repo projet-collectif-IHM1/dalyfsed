@@ -1,0 +1,8 @@
+/* Masquer la scrollbar par défaut mais garder le défilement possible */
+.scroll-smooth::-webkit-scrollbar {
+  display: none;
+}
+.scroll-smooth {
+  -ms-overflow-style: none;  /* IE et Edge */
+  scrollbar-width: none;  /* Firefox */
+}

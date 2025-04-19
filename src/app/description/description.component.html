@@ -1,0 +1,108 @@
+<app-header></app-header>
+
+<nav class="flex px-36 py-10 pt-14" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <li class="inline-flex items-center">
+      <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-cyan-700 dark:text-gray-400 dark:hover:text-white">
+        <svg class="w-3 h-3 me-2.5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+          <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+        </svg>
+        Home
+      </a>
+    </li>
+
+    <li aria-current="page">
+      <div class="flex items-center">
+        <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+        </svg>
+        <span class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">Hotel</span>
+      </div>
+    </li>
+
+    <li aria-current="page">
+      <div class="flex items-center">
+        <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+        </svg>
+        <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">{{ hotel.nomHotel }}</span>
+      </div>
+    </li>
+  </ol>
+</nav>
+
+<div class="flex px-36">
+  <div *ngIf="!isLoading && hotel" class="w-full flex flex-col gap-10">
+    
+    <!-- Title and basic info -->
+    <div class="space-y-4">
+      <p class="text-4xl font-medium text-cyan-700">{{ hotel.nomHotel }}</p>
+
+      <div class="flex items-center gap-2 text-gray-600">
+        <mat-icon class="text-o-500">location_on</mat-icon>
+        <p>{{ hotel.adresse }}</p>
+      </div>
+
+      <div class="flex items-center">
+        <ng-container *ngFor="let star of getStars(hotel.classement)">
+          <mat-icon class="text-amber-500">star</mat-icon>
+        </ng-container>
+      </div>
+      
+    </div>
+
+    <!-- Image + Map side by side -->
+    <div class="flex flex-col lg:flex-row gap-10 ">
+      
+      <!-- Hotel Image -->
+      <div class="w-full lg:w-1/2">
+        <img [src]="hotel.imageHotel[0]" alt="Image de l'hôtel" class="rounded-md  w-full object-cover">
+      </div>
+
+      <!-- Google Map -->
+      <div class="w-full lg:w-1/4 rounded-md">
+        <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3190.848091379625!2d10.611987515612222!3d36.40400067900909!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1302b51b0e56a8b7%3A0xd518498b6f78e0ad!2sHammamet!5e0!3m2!1sen!2stn!4v1712671912552!5m2!1sen!2stn" 
+        width="300" 
+        height="410" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+      
+      
+      </div>
+
+    </div>
+
+    <!-- Description -->
+    <div class="flex flex-col mt-10">
+      <p class="text-2xl font-semibold text-cyan-700">DESCRIPTION</p>
+      <div class="h-1 w-16 bg-amber-500 rounded mt-1"></div>
+    </div>
+
+    <!-- Details -->
+    <div class="flex flex-col gap-8 border border-gray-300 p-8 rounded-2xl shadow-sm">
+      
+      <div>
+        <p class="text-xl text-cyan-600 font-medium mb-2">Accommodation</p>
+        <p class="text-gray-700">{{ hotel.hebergement }}</p>
+      </div>
+
+      <div>
+        <p class="text-xl text-cyan-600 font-medium mb-2">Restoration</p>
+        <p class="text-gray-700">{{ hotel.restauration }}</p>
+      </div>
+
+      <div>
+        <p class="text-xl text-cyan-600 font-medium mb-2">Activities and leisure</p>
+        <p class="text-gray-700">{{ hotel.activites }}</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<app-hotels-recommandes></app-hotels-recommandes>
+<app-footer></app-footer>

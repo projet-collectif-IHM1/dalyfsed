@@ -1,0 +1,17 @@
+/* Style de base pour le carousel */
+.relative {
+    position: relative;
+  }
+  .absolute {
+    position: absolute;
+  }
+  .flex {
+    display: flex;
+  }
+  .hidden {
+    display: none;
+  }
+  .block {
+    display: block;
+  }
+  

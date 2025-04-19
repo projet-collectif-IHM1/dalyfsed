@@ -1,0 +1,200 @@
+<section class="bg-white dark:bg-gray-900">
+    <div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+            {{ isEditMode ? 'Update Hotel' : 'Create New Hotel' }}
+        </h2>
+        <form [formGroup]="hotelForm" (ngSubmit)="onSubmit()">
+            <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+                <!-- Hotel Name Field -->
+                <div class="form-group sm:col-span-2">
+                    <label for="nomHotel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Hotel Name
+                    </label>
+                    <input type="text" id="nomHotel"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                           placeholder="Enter hotel name"
+                           formControlName="nomHotel"
+                           [class.border-red-500]="hotelForm.get('nomHotel')?.invalid && hotelForm.get('nomHotel')?.touched">
+                    
+                    <div *ngIf="hotelForm.get('nomHotel')?.invalid && hotelForm.get('nomHotel')?.touched" 
+                         class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <span *ngIf="hotelForm.get('nomHotel')?.errors?.['required']">
+                            Hotel name is required
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Image URL Field -->
+                <div class="form-group sm:col-span-2">
+                    <label for="imageHotel" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Image URLs (comma separated)
+                    </label>
+                    <input type="text" id="imageHotel"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                           placeholder="Enter image URLs separated by commas"
+                           formControlName="imageHotel"
+                           [class.border-red-500]="hotelForm.get('imageHotel')?.invalid && hotelForm.get('imageHotel')?.touched">
+                    
+                    <div *ngIf="hotelForm.get('imageHotel')?.invalid && hotelForm.get('imageHotel')?.touched" 
+                         class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <span *ngIf="hotelForm.get('imageHotel')?.errors?.['required']">
+                            At least one image URL is required
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Address Field -->
+                <div class="form-group sm:col-span-2">
+                    <label for="adresse" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Address
+                    </label>
+                    <input type="text" id="adresse"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                           placeholder="Enter hotel address"
+                           formControlName="adresse"
+                           [class.border-red-500]="hotelForm.get('adresse')?.invalid && hotelForm.get('adresse')?.touched">
+                    
+                    <div *ngIf="hotelForm.get('adresse')?.invalid && hotelForm.get('adresse')?.touched" 
+                         class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <span *ngIf="hotelForm.get('adresse')?.errors?.['required']">
+                            Address is required
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Rating Field -->
+                <div class="form-group">
+                    <label for="classement" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Star Rating (1-5)
+                    </label>
+                    <input type="number" id="classement"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                           placeholder="Enter rating"
+                           formControlName="classement"
+                           min="1" max="5"
+                           [class.border-red-500]="hotelForm.get('classement')?.invalid && hotelForm.get('classement')?.touched">
+                    
+                    <div *ngIf="hotelForm.get('classement')?.invalid && hotelForm.get('classement')?.touched" 
+                         class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <span *ngIf="hotelForm.get('classement')?.errors?.['required']">
+                            Rating is required
+                        </span>
+                        <span *ngIf="hotelForm.get('classement')?.errors?.['min'] || hotelForm.get('classement')?.errors?.['max']">
+                            Rating must be between 1 and 5 stars
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Country Selection Field -->
+<div class="form-group">
+    <label for="paye_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        Country
+    </label>
+    <select id="paye_id"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            formControlName="paye_id"
+            [class.border-red-500]="hotelForm.get('paye_id')?.invalid && hotelForm.get('paye_id')?.touched">
+        <option value="">Select a country</option>
+        <option *ngFor="let country of countries" [value]="country.id">
+            {{ country.nompaye }}
+        </option>
+    </select>
+    
+    <div *ngIf="hotelForm.get('paye_id')?.invalid && hotelForm.get('paye_id')?.touched" 
+         class="mt-1 text-sm text-red-600 dark:text-red-400">
+        <span *ngIf="hotelForm.get('paye_id')?.errors?.['required']">
+            Country selection is required
+        </span>
+    </div>
+</div>
+
+                <!-- Description Field -->
+                  <!-- Address Field -->
+                <div class="form-group sm:col-span-2">
+                    <label for="hebergement" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        hebergement
+                        
+                    </label>
+                    <textarea type="text" id="hebergement"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                           placeholder="Enter hotel address"
+                           formControlName="hebergement"
+                           [class.border-red-500]="hotelForm.get('hebergement')?.invalid && hotelForm.get('hebergement')?.touched"></textarea>
+                    
+                    <div *ngIf="hotelForm.get('hebergement')?.invalid && hotelForm.get('hebergement')?.touched" 
+                         class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <span *ngIf="hotelForm.get('hebergement')?.errors?.['required']">
+                            hebergement is required
+                        </span>
+                    </div>
+                </div>
+                 <!-- Address Field -->
+                 <div class="form-group sm:col-span-2">
+                    <label for="restauration" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        
+                        restauration
+                        
+                    </label>
+                    <textarea type="text" id="restauration"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                           placeholder="Enter hotel address"
+                           formControlName="restauration"
+                           [class.border-red-500]="hotelForm.get('restauration')?.invalid && hotelForm.get('restauration')?.touched"></textarea>
+                    
+                    <div *ngIf="hotelForm.get('restauration')?.invalid && hotelForm.get('restauration')?.touched" 
+                         class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <span *ngIf="hotelForm.get('restauration')?.errors?.['required']">
+                            restauration is required
+                        </span>
+                    </div>
+                </div>
+                 <!-- Address Field -->
+                 <div class="form-group sm:col-span-2">
+                    <label for="activites" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                       
+                        activites
+                    </label>
+                    <textarea type="text" id="activites"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                           placeholder="Enter hotel address"
+                           formControlName="activites"
+                           [class.border-red-500]="hotelForm.get('activites')?.invalid && hotelForm.get('activites')?.touched"></textarea>
+                    
+                    <div *ngIf="hotelForm.get('activites')?.invalid && hotelForm.get('activites')?.touched" 
+                         class="mt-1 text-sm text-red-600 dark:text-red-400">
+                        <span *ngIf="hotelForm.get('activites')?.errors?.['required']">
+                            Address is required
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <!-- Submit Button -->
+                <button type="submit" 
+                        class="text-white bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                        [disabled]="hotelForm.invalid">
+                    {{ isEditMode ? 'Update' : 'Create' }}
+                </button>
+
+                <!-- Delete Button (only shown in edit mode) -->
+                <button *ngIf="isEditMode" 
+                        type="button" 
+                        class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
+                    <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    Delete
+                </button>
+
+                <!-- Cancel Button -->
+                <button type="button" 
+                        (click)="onCancel()"
+                        class="text-gray-600 inline-flex items-center hover:text-white border border-gray-600 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-900">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

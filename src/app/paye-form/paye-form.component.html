@@ -1,0 +1,69 @@
+<app-header-admin></app-header-admin>
+<div class="bg-slate-50 h-full flex justify-center "> 
+<section class=" dark:bg-gray-900">
+    <div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
+      <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+        {{ isEditMode ? 'Update Paye' : 'Create New Paye' }}
+      </h2>
+      <form [formGroup]="payeForm" (ngSubmit)="onSubmit()">
+        <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 py-6 sm:mb-5">
+          <!-- Nompaye Field -->
+          <div class="form-group">
+            <label for="nompaye" class="block mb-2 text-sm font-medium  text-gray-900 dark:text-white">
+              Country Name
+            </label>
+            <input type="text" id="nompaye"
+                   class="bg-gray-50 border border-gray-300 w-64 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                   placeholder="Enter country name"
+                   formControlName="nompaye"
+                   [class.border-red-500]="payeForm.get('nompaye')?.invalid && payeForm.get('nompaye')?.touched">
+            
+            <div *ngIf="payeForm.get('nompaye')?.invalid && payeForm.get('nompaye')?.touched" 
+                 class="mt-1 text-sm text-red-600 dark:text-red-400">
+              <span *ngIf="payeForm.get('nompaye')?.errors?.['required']">
+                Country name is required
+              </span>
+            </div>
+          </div>
+  
+          <!-- Image Paye Field -->
+          <div class="form-group">
+            <label for="imagepaye" class="block mb-2 text-sm font-medium  text-gray-900 dark:text-white">
+              Image URL
+            </label>
+            <input type="text" id="imagepaye"
+                   class="bg-gray-50 border  border-gray-300 w-64 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                   placeholder="Enter image URL"
+                   formControlName="imagepaye"
+                   [class.border-red-500]="payeForm.get('imagepaye')?.invalid && payeForm.get('imagepaye')?.touched">
+            
+            <div *ngIf="payeForm.get('imagepaye')?.invalid && payeForm.get('imagepaye')?.touched" 
+                 class="mt-1 text-sm text-red-600 dark:text-red-400">
+              <span *ngIf="payeForm.get('imagepaye')?.errors?.['required']">
+                Image URL is required
+              </span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="flex items-center space-x-4">
+          <!-- Submit Button -->
+          <button type="submit" 
+                  class="text-white bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  [disabled]="payeForm.invalid">
+            {{ isEditMode ? 'Update' : 'Create' }}
+          </button>
+  
+       
+  
+          <!-- Cancel Button -->
+          <button type="button" 
+                  (click)="onCancel()"
+                  class="text-gray-600 inline-flex items-center hover:text-white border border-gray-600 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-900">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

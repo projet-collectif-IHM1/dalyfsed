@@ -1,0 +1,17 @@
+.hurricane-regular {
+    font-family: "Hurricane", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 50px;
+  }
+  /* Masquer la barre de défilement */
+  .scroll-container {
+    overflow-x: hidden; /* Cache la barre de défilement horizontale */
+    scroll-behavior: smooth; /* Ajoute un effet fluide au scroll */
+    display: flex;
+    gap: 20px; /* Espace entre les éléments */
+  }
+  
+  
+  
+  
