@@ -1,108 +1,211 @@
 <app-header></app-header>
 
-<nav class="flex px-36 py-10 pt-14" aria-label="Breadcrumb">
+<nav class="flex px-4 md:px-16 lg:px-36 py-6 md:py-10 pt-14" aria-label="Breadcrumb">
   <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
     <li class="inline-flex items-center">
-      <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-cyan-700 dark:text-gray-400 dark:hover:text-white">
+      <a routerLink="/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-cyan-700">
         <svg class="w-3 h-3 me-2.5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-          <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+          <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
         </svg>
-        Home
+        Accueil
       </a>
     </li>
-
-    <li aria-current="page">
+    <li>
       <div class="flex items-center">
         <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
         </svg>
-        <span class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">Hotel</span>
+        <a routerLink="/hotels" class="ms-1 text-sm font-medium text-gray-500 hover:text-cyan-700">Hôtels</a>
       </div>
     </li>
-
     <li aria-current="page">
       <div class="flex items-center">
         <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
         </svg>
-        <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">{{ hotel.nomHotel }}</span>
+        <span class="ms-1 text-sm font-medium text-gray-500">{{ hotel?.nomHotel || 'Chargement...' }}</span>
       </div>
     </li>
   </ol>
 </nav>
 
-<div class="flex px-36">
-  <div *ngIf="!isLoading && hotel" class="w-full flex flex-col gap-10">
+<div class="flex px-4 md:px-16 lg:px-36">
+  <div *ngIf="!isLoading && hotel" class="w-full flex flex-col gap-8 md:gap-10">
+    <!-- Title and rating -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-2">
+        <P class="text-3xl md:text-4xl font-medium text-cyan-800">{{ hotel.nomHotel }}</P>
+        <div class="flex items-center gap-2 text-gray-600">
+          <mat-icon class="text-amber-500">location_on</mat-icon>
+          <p>{{ hotel.adresse }}</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <div class="bg-cyan-100 text-cyan-800 px-4 py-2 rounded-lg">
+          <div class="flex items-center">
+            <span class="text-xl font-bold mr-1">{{ hotel.classement }}</span>
+            <span class="text-amber-500">/5</span>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Gallery -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
+      <!-- Main image -->
+      <div class="md:col-span-2 row-span-2">
+        <img [src]="hotel.imageHotel[0]" 
+             [alt]="'Image principale de ' + hotel.nomHotel" 
+             class="w-full h-full object-cover  shadow-md">
+      </div>
+      
+      <!-- Secondary images -->
+      <div class="md:col-span-1">
+        <img [src]="hotel.imageHotel[1]" 
+             [alt]="'Image secondaire de ' + hotel.nomHotel" 
+             class="w-full h-full object-cover  shadow-md">
+      </div>
+      
+      <div class="md:col-span-1">
+        <img [src]="hotel.imageHotel[2]" 
+             [alt]="'Image secondaire de ' + hotel.nomHotel" 
+             class="w-full h-full object-cover  shadow-md">
+      </div>
+      
+      <div class="md:col-span-1">
+        <img [src]="hotel.imageHotel[3]" 
+             [alt]="'Image secondaire de ' + hotel.nomHotel" 
+             class="w-full h-full object-cover  shadow-md">
+      </div>
+      
+      <div class="md:col-span-1 relative">
+        <img [src]="hotel.imageHotel[4]" 
+             [alt]="'Image secondaire de ' + hotel.nomHotel" 
+             class="w-full h-full object-cover  shadow-md">
+        <div class="absolute inset-0 bg-black/40 flex items-center justify-center ">
+          <button class="text-white font-bold bg-cyan-600 hover:bg-cyan-700 px-4 py-2 rounded-lg transition-colors">
+            +{{ hotel.imageHotel.length - 5 }} photos
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col lg:flex-row gap-6 p-6">
+      <!-- Rooms Table -->
+      <div class="w-full lg:w-3/4 bg-white shadow-lg rounded-xl overflow-hidden">
+        <div class="grid grid-cols-4 bg-cyan-50 font-semibold text-cyan-700 text-sm p-4">
+          <div>Room Type</div>
+          <div>Your Options</div>
+          <div>Current Price</div>
+          <div>Select</div>
+        </div>
+      
+        <!-- Room List -->
+        <div *ngIf="!isLoading && hotel">
+          <div *ngFor="let chambre of hotel.chambres" class="grid grid-cols-4 items-center p-4 border-t hover:bg-cyan-50/30 transition-colors">
+            <div>
+              <p class="text-cyan-700 font-semibold">{{chambre.typeChambre}}</p>
+              <p class="text-xs text-gray-500">Standard</p>
+            </div>
+            <div class="text-sm text-gray-600">
+              <div class="flex items-center gap-1">
+                <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-amber-600">Breakfast included</span>
+              </div>
+              <div class="flex items-center gap-1 mt-1 text-xs text-gray-500">
+                <svg class="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                Non-refundable
+              </div>
+            </div>
+            <div class="text-sm">
+              <p class="text-lg font-bold text-gray-800">{{chambre.prixchambre}}<span class="text-xs font-normal text-amber-600">(-16%)</span></p>
+            </div>
+            <div class="flex justify-center">
+              <div class="w-5 h-5 rounded-full bg-cyan-600 flex items-center justify-center">
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 5.707 8.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l7-7a1 1 0 000-1.414z" clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     
-    <!-- Title and basic info -->
-    <div class="space-y-4">
-      <p class="text-4xl font-medium text-cyan-700">{{ hotel.nomHotel }}</p>
-
-      <div class="flex items-center gap-2 text-gray-600">
-        <mat-icon class="text-o-500">location_on</mat-icon>
-        <p>{{ hotel.adresse }}</p>
-      </div>
-
-      <div class="flex items-center">
-        <ng-container *ngFor="let star of getStars(hotel.classement)">
-          <mat-icon class="text-amber-500">star</mat-icon>
-        </ng-container>
+      <!-- Booking Summary -->
+      <div *ngFor="let chambre of hotel.chambres" class="w-full lg:w-1/4 bg-cyan-50 p-6 rounded-xl shadow-lg mt-6">
+        
+        <p class="font-bold text-cyan-800 text-lg">Booking Summary</p>
+        <p class="text-xs text-white bg-amber-500 rounded-full px-2 py-1 w-fit mt-2">-16% OFFER</p>
+      
+        <div class="mt-4">
+          <p class="line-through text-sm text-gray-400">{{ (somme * 1.2) | number:'1.2-2' }} TND</p>
+          <p class="text-2xl font-bold text-gray-900">{{ somme | number:'1.2-2' }} TND</p>
+          <p class="text-xs text-gray-600 mt-2">
+            <svg class="w-4 h-4 inline-block mr-1 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            All taxes included
+          </p>
+        </div>
       </div>
       
     </div>
-
-    <!-- Image + Map side by side -->
-    <div class="flex flex-col lg:flex-row gap-10 ">
-      
-      <!-- Hotel Image -->
-      <div class="w-full lg:w-1/2">
-        <img [src]="hotel.imageHotel[0]" alt="Image de l'hôtel" class="rounded-md  w-full object-cover">
+    
+    <!-- Hotel sections -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Description -->
+      <div class="lg:col-span-2 space-y-8">
+        <section>
+          <P class="text-2xl font-semibold text-cyan-700 mb-4 pb-2 ">DESCRIPTION</P>
+          <div class="h-1.5 w-20 bg-amber-400 rounded-full mt-2"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+              <h3 class="text-xl text-cyan-600 font-medium mb-3">Hébergement</h3>
+              <p class="text-gray-700">{{ hotel.hebergement || 'Non spécifié' }}</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+              <h3 class="text-xl text-cyan-600 font-medium mb-3">Restauration</h3>
+              <p class="text-gray-700">{{ hotel.restauration || 'Non spécifié' }}</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+              <h3 class="text-xl text-cyan-600 font-medium mb-3">Activités</h3>
+              <p class="text-gray-700">{{ hotel.activites || 'Non spécifié' }}</p>
+            </div>
+          </div>
+        </section>
       </div>
-
-      <!-- Google Map -->
-      <div class="w-full lg:w-1/4 rounded-md">
-        <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3190.848091379625!2d10.611987515612222!3d36.40400067900909!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1302b51b0e56a8b7%3A0xd518498b6f78e0ad!2sHammamet!5e0!3m2!1sen!2stn!4v1712671912552!5m2!1sen!2stn" 
-        width="300" 
-        height="410" 
-        style="border:0;" 
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
       
-      
+      <!-- Map -->
+      <div class="lg:col-span-1">
+        <div class="sticky top-4">
+          <P class="text-2xl font-semibold text-cyan-700 mb-4 pb-2 ">LOCALISATION</P>
+          <div class="h-1.5 w-20 bg-amber-400 rounded-full mt-2 mb-2"></div>
+          <div class="bg-white p-4 rounded-xl shadow-md mt-2">
+            <iframe 
+              [src]="getSafeMapUrl(hotel.adresse)" 
+              class="w-full h-80 rounded-lg"
+              style="border:0;" 
+              allowfullscreen 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            <div class="mt-4 flex items-center gap-2">
+              <mat-icon class="text-amber-500">directions</mat-icon>
+              <p class="text-gray-600">À {{ hotel.distanceCentreVille }} du centre-ville</p>
+            </div>
+          </div>
+        </div>
       </div>
-
     </div>
-
-    <!-- Description -->
-    <div class="flex flex-col mt-10">
-      <p class="text-2xl font-semibold text-cyan-700">DESCRIPTION</p>
-      <div class="h-1 w-16 bg-amber-500 rounded mt-1"></div>
-    </div>
-
-    <!-- Details -->
-    <div class="flex flex-col gap-8 border border-gray-300 p-8 rounded-2xl shadow-sm">
-      
-      <div>
-        <p class="text-xl text-cyan-600 font-medium mb-2">Accommodation</p>
-        <p class="text-gray-700">{{ hotel.hebergement }}</p>
-      </div>
-
-      <div>
-        <p class="text-xl text-cyan-600 font-medium mb-2">Restoration</p>
-        <p class="text-gray-700">{{ hotel.restauration }}</p>
-      </div>
-
-      <div>
-        <p class="text-xl text-cyan-600 font-medium mb-2">Activities and leisure</p>
-        <p class="text-gray-700">{{ hotel.activites }}</p>
-      </div>
-
-    </div>
-
   </div>
 </div>
+
 <app-hotels-recommandes></app-hotels-recommandes>
 <app-footer></app-footer>

@@ -13,17 +13,17 @@
     <div *ngFor="let hotel of hotels">
       <div [routerLink]="['/Hotel_User/description', hotel.id]"  class ="  cursor-pointer relative w-[300px] overflow-hidden">
         <!-- Image de l'hôtel avec ombre interne -->
-        <div class="group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+        <div class="group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl ">
           <img [src]="hotel.imageHotel[0]" alt="Image de l'hôtel" 
                class="w-[300px] h-[280px] object-cover transform group-hover:scale-105 transition duration-300">
           
           <!-- Gradient overlay -->
-          <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/20 to-transparent p-5 flex flex-col">
+          <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-transparent p-5 flex flex-col">
               
               <!-- Top section - Title and rating -->
               <div class="flex justify-between items-start">
                   <div>
-                      <p class="text-white text-xl font-bold">{{ hotel.nomHotel }}</p>
+                      <p class="text-white text-xl font-medium">{{ hotel.nomHotel }}</p>
                       <div class="flex items-center mt-1">
                         <svg class="w-4 h-4 mr-2  text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -38,10 +38,12 @@
               </div>
               
               <!-- Middle section - Address -->
-              <div class="mt-1 flex items-center">
-                <div class="flex text-amber-400">
+              <div class="mt-1 flex items-center ">
+                <div class="flex text-amber-400 text-sm">
                   <ng-container *ngFor="let star of getStars(hotel.classement)">
-<mat-icon class="text-amber-500">star</mat-icon>
+                    <mat-icon class="text-amber-500 text-lg h-1 w-16 leading-none">star</mat-icon>
+
+
 </ng-container>
                  <span class="ml-1 text-white text-sm font-medium">({{hotel.classement}})</span>
              </div>

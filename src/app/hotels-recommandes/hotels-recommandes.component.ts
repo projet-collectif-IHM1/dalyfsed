@@ -40,18 +40,20 @@ export class HotelsRecommandesComponent {
     });
   }
    // Scroll vers la gauche
- scrollLeft() {
-  const container = document.getElementById('hotelsContainer');
-  if (container) {
-    container.scrollBy({ left: -300, behavior: 'smooth' });
+   scrollLeft() {
+    const container = document.getElementById('hotelsContainer');
+    if (container) {
+      container.scrollBy({ left: -310, behavior: 'smooth' }); // même valeur que la largeur de ta carte
+    }
   }
-}
-
-// Scroll vers la droite
-scrollRight() {
-  const container = document.getElementById('hotelsContainer');
-  if (container) {
-    container.scrollBy({ left: 300, behavior: 'smooth' });
+  
+  scrollRight() {
+    const container = document.getElementById('hotelsContainer');
+    if (container) {
+      container.scrollBy({ left: 310, behavior: 'smooth' });
+    }
   }
-}
+  getStars(count: number): any[] {
+    return new Array(count);
+  }
 }
