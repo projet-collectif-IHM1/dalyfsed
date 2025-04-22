@@ -42,10 +42,10 @@ export class CarsoulComponent implements OnInit {
   }
 
   scrollLeft() {
-    this.scrollContainer.nativeElement.scrollBy({ left: -344, behavior: 'smooth' });
+    this.scrollContainer.nativeElement.scrollBy({ left: -355, behavior: 'smooth' });
   }
 
   scrollRight() {
-    this.scrollContainer.nativeElement.scrollBy({ left: 344, behavior: 'smooth' });
+    this.scrollContainer.nativeElement.scrollBy({ left: 355, behavior: 'smooth' });
   }
 }

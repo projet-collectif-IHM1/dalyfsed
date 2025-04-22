@@ -18,6 +18,7 @@ export class ChambreService {
         return this.http.put<void>(`http://127.0.0.1:8000/chambres/${id}`,chambre)}
         createChambre(chambre: any): Observable<any> {
           return this.http.post("http://127.0.0.1:8000/chambres/", chambre);}
-
+          getChambreByHotelId(id:string):Observable<any>{
+            return this.http.get(`http://127.0.0.1:8000/chambres/hotel/${id}`)}
 
 }

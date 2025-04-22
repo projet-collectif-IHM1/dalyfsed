@@ -38,4 +38,7 @@ export class ServiceClientService{
   }
 
   // Autres méthodes similaires pour les chambres, offres, etc...
+  getOptions(): Observable<any> {
+    return this.http.get(`${API_URL}/options/`);
+  }
 }

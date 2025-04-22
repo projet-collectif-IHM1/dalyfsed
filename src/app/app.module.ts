@@ -59,6 +59,16 @@ import { ButtonRetourComponent } from './button-retour/button-retour.component';
 import { DescriptionComponent } from './description/description.component';
 import { HotelsRecommandesComponent } from './hotels-recommandes/hotels-recommandes.component';
 import { OmraComponent } from './omra/omra.component';
+import { AboutComponent } from './about/about.component';
+import { CarsoulBgComponent } from './carsoul-bg/carsoul-bg.component';
+import { AvisAdminComponent } from './avis-admin/avis-admin.component';
+import { UserAdminComponent } from './user-admin/user-admin.component';
+import { OffreComponent } from './offre/offre.component';
+import { OffreFormComponent } from './offre-form/offre-form.component';
+import { ReservationFormComponent } from './reservation-form/reservation-form.component';
+import { OptionComponent } from './option/option.component';
+import { OptionFormComponent } from './option-form/option-form.component';
+import { LogoutComponent } from './logout/logout.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +98,17 @@ import { OmraComponent } from './omra/omra.component';
       ButtonRetourComponent,
       DescriptionComponent,
       HotelsRecommandesComponent,
-      OmraComponent, 
+      OmraComponent,
+      AboutComponent,
+      CarsoulBgComponent,
+      AvisAdminComponent,
+      UserAdminComponent,
+      OffreComponent,
+      OffreFormComponent,
+      ReservationFormComponent,
+      OptionComponent,
+      OptionFormComponent,
+      LogoutComponent, 
       
       
   ],
@@ -139,7 +159,9 @@ import { OmraComponent } from './omra/omra.component';
     MatMenuModule,
     MatButtonModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule,
+  
 
   ],
   providers: [],

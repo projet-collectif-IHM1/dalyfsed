@@ -23,13 +23,6 @@ export class OmraComponent implements OnInit {
   searchQuery: string = '';
 
   // Filtres
-  ratings = [
-    { display: "★ 1", value: 1 },
-    { display: "★★ 2", value: 2 },
-    { display: "★★★ 3", value: 3 },
-    { display: "★★★★ 4", value: 4 },
-    { display: "★★★★★ 5", value: 5 }
-  ];
   priceRanges = [
     "Under 80 DT", 
     "100 to 200 DT", 
@@ -44,7 +37,10 @@ export class OmraComponent implements OnInit {
   ];
   selectedPrices = new Set<string>();
   allSelected = false;
-  selectedRating: any = null;
+
+  ratings = [1, 2, 3, 4, 5];
+  selectedRatings = new Set<number>();
+  allRatingsSelected = false;
 
   dateRange: { start: string | null, end: string | null } = { start: null, end: null };
   roomTypes: string[] = [];
@@ -92,7 +88,7 @@ export class OmraComponent implements OnInit {
     this.payeService.getPaye().subscribe({
       next: (data) => {
         this.payes = data.payes;
-        this.loadAllHotels(); // Charge les hôtels après avoir reçu les pays
+        this.loadAllHotels();
       },
       error: (error) => {
         console.error("Erreur payes:", error);
@@ -104,7 +100,6 @@ export class OmraComponent implements OnInit {
   loadAllHotels(): void {
     this.hotelService.getHotels().subscribe({
       next: (data) => {
-        // Récupérez l'ID du pays "Kingdom of Saudi Arabia"
         const saudiArabia = this.payes.find((pays: any) => pays.nompaye == 'Kingdom of Saudi Arabia');
         const saudiArabiaId = saudiArabia ? saudiArabia.id : null;
   
@@ -114,7 +109,6 @@ export class OmraComponent implements OnInit {
           return;
         }
   
-        // Filtrer uniquement les hôtels du Royaume d'Arabie Saoudite
         this.hotels = data.hotels
           .filter((hotel: any) => hotel.paye_id === saudiArabiaId)
           .map((hotel: any) => ({
@@ -127,7 +121,7 @@ export class OmraComponent implements OnInit {
               }))
           }));
   
-        this.applyFilters(); // Applique les filtres après le chargement
+        this.applyFilters();
         this.isLoading = false;
       },
       error: (error) => {
@@ -148,6 +142,7 @@ export class OmraComponent implements OnInit {
       const nameMatch = !this.searchQuery || 
         hotel.nomHotel.toLowerCase().includes(this.searchQuery.toLowerCase());
       
+      // Filtre par prix
       let priceMatch = true;
       if (this.selectedPrices.size > 0) {
         const hotelPrice = hotel.offre[0]?.prixParNuit || 0;
@@ -158,11 +153,15 @@ export class OmraComponent implements OnInit {
           return hotelPrice >= min && hotelPrice <= max;
         });
       }
+      
+      // Filtre par rating
       let ratingMatch = true;
-      if (this.selectedRating) {
+      if (this.selectedRatings.size > 0 && !this.allRatingsSelected) {
         const hotelRating = hotel.classement || 0;
-        ratingMatch = hotelRating === this.selectedRating.value;
+        ratingMatch = this.selectedRatings.has(hotelRating);
       }
+      
+      // Filtre par type de chambre
       let roomTypeMatch = true;
       if (this.selectedRoomTypes.size > 0 && !this.allRoomTypesSelected) {
         roomTypeMatch = hotel.chambres?.some((chambre: any) => {
@@ -172,6 +171,8 @@ export class OmraComponent implements OnInit {
           );
         }) || false;
       }
+      
+      // Filtre par date
       let dateMatch = true;
       if (this.dateRange.start || this.dateRange.end) {
         dateMatch = this.checkHotelAvailability(
@@ -180,14 +181,8 @@ export class OmraComponent implements OnInit {
           this.dateRange.end ? new Date(this.dateRange.end) : null
         );
       }
+      
       return nameMatch && priceMatch && ratingMatch && roomTypeMatch && dateMatch;
-    });
-    console.log('Hôtels filtrés:', this.filteredHotels);
-    console.log('Critères de filtrage:', {
-      search: this.searchQuery,
-      price: this.selectedPrices,
-      rating: this.selectedRating,
-      dateRange: this.dateRange
     });
   }
 
@@ -195,7 +190,8 @@ export class OmraComponent implements OnInit {
     this.searchQuery = "";
     this.selectedPrices.clear();
     this.allSelected = false;
-    this.selectedRating = null;
+    this.selectedRatings.clear();
+    this.allRatingsSelected = false;
     this.dateRange = { start: null, end: null };
     this.selectedRoomTypes.clear();
     this.allRoomTypesSelected = false;
@@ -220,6 +216,7 @@ export class OmraComponent implements OnInit {
     this.accordions[key] = !this.accordions[key];
   }
 
+  // Méthodes pour les prix
   togglePriceSelection(price: string): void {
     if (this.selectedPrices.has(price)) {
       this.selectedPrices.delete(price);
@@ -239,10 +236,27 @@ export class OmraComponent implements OnInit {
     this.applyFilters();
   }
 
-  onRatingChanged(): void {
+  // Méthodes pour les ratings
+  toggleRatingSelection(rating: number): void {
+    if (this.selectedRatings.has(rating)) {
+      this.selectedRatings.delete(rating);
+    } else {
+      this.selectedRatings.add(rating);
+    }
+    this.allRatingsSelected = this.selectedRatings.size === this.ratings.length;
     this.applyFilters();
   }
 
+  toggleAllRatings(event: any): void {
+    this.allRatingsSelected = event.target.checked;
+    this.selectedRatings.clear();
+    if (this.allRatingsSelected) {
+      this.ratings.forEach(rating => this.selectedRatings.add(rating));
+    }
+    this.applyFilters();
+  }
+
+  // Méthodes pour les types de chambre
   toggleRoomTypeSelection(type: string): void {
     if (this.selectedRoomTypes.has(type)) {
       this.selectedRoomTypes.delete(type);
@@ -281,7 +295,6 @@ export class OmraComponent implements OnInit {
     return true;
   }
 
-  
   checkHotelAvailability(hotel: any, startDate: Date | null, endDate: Date | null): boolean {
     const hotelStartDate = new Date(hotel.datedabut);
     const hotelEndDate = new Date(hotel.datefin);
@@ -302,4 +315,9 @@ export class OmraComponent implements OnInit {
 
     return true;
   }
+
+  getStars(count: number): any[] {
+    return new Array(count);
+  }
+  
 }

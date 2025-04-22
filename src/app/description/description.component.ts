@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { HotelService } from '../Services/hotel.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChambreService } from '../Services/chambre.service';
+import { ServiceClientService } from '../Services/service-client.service';
+import { OptionService } from '../Services/option.service';
 
 interface Chambre {
   id: string;
@@ -14,6 +16,18 @@ interface Chambre {
   options?: string[];
 }
 
+interface Option {
+  id: string;
+  typeOption: string;
+  percent: number;
+}
+
+interface Offre {
+  prixParNuit: number;
+  promotion: number;
+  hotel_id: string;
+}
+
 @Component({
   selector: 'app-description',
   templateUrl: './description.component.html',
@@ -23,24 +37,31 @@ export class DescriptionComponent implements OnInit {
   isLoading: boolean = true;
   hotel: any = null;
   chambres: Chambre[] = [];
-  selectedChambre: Chambre | null = null;
+  options: Option[] = [];
+  selectedRoom: { chambre: Chambre, option: Option | null } | null = null;
   errorMessage: string = '';
   currentId: string | null = null;
+  searchQuery: string = '';
+  checkInDate: string = '';
+  checkOutDate: string = '';
+  priceLimit: string = '';
 
-  selectedChambres: Set<number> = new Set<number>();
-  somme: number = 0;
 
   constructor(
     private hotelService: HotelService,
     private chambreService: ChambreService,
+    private serviceClientService: ServiceClientService,
     private route: ActivatedRoute,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private optionService: OptionService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.currentId = this.route.snapshot.paramMap.get('id');
     if (this.currentId) {
       this.loadHotelData();
+      this.loadOptions();
     } else {
       this.errorMessage = "Hotel ID not provided.";
       this.isLoading = false;
@@ -63,13 +84,21 @@ export class DescriptionComponent implements OnInit {
     this.chambreService.getChambreById(this.currentId!).subscribe({
       next: (chambresData) => {
         this.chambres = chambresData;
-        if (this.chambres.length > 0) {
-          this.selectedChambre = this.chambres[0];
-        }
         this.isLoading = false;
       },
       error: (error) => {
         this.handleError("Error loading rooms", error);
+      }
+    });
+  }
+
+  private loadOptions(): void {
+    this.optionService.getAllOptions().subscribe({
+      next: (data) => {
+        this.options = data.options;
+      },
+      error: (error) => {
+        console.error("Erreur lors du chargement des options:", error);
       }
     });
   }
@@ -80,20 +109,61 @@ export class DescriptionComponent implements OnInit {
     this.isLoading = false;
   }
 
-  toggleSelection(index: number): void {
-    if (this.selectedChambres.has(index)) {
-      this.selectedChambres.delete(index);
-    } else {
-      this.selectedChambres.add(index);
-    }
-    this.calculateTotal();
+  getMaxPromotion(): number {
+    if (!this.hotel?.offre) return 0;
+    return this.hotel.offre.reduce((max: number, offre: Offre) => {
+      return Math.max(max, offre.promotion || 0);
+    }, 0);
   }
 
-  calculateTotal(): void {
-    this.somme = 0;
-    this.selectedChambres.forEach(index => {
-      this.somme += this.chambres[index].prixchambre;
-    });
+  calculateOptionPrice(prixBase: number, optionPercent: number = 0): number {
+    const maxPromotion = this.getMaxPromotion();
+    // Appliquer d'abord la promotion de l'offre, puis celle de l'option
+    const prixPromo = prixBase+(prixBase * optionPercent/100 );
+    return prixPromo
+    
+  }
+
+  getOriginalPrice(): number {
+    return this.selectedRoom?.chambre.prixchambre || 0;
+  }
+  calculateFinalPrice(prixBase: number, optionPercent: number = 0): number {
+    const finalPromotion = this.calculateOptionPrice(prixBase, optionPercent);
+    const maxPromotion = this.getMaxPromotion();
+    // Appliquer d'abord la promotion de l'offre, puis celle de l'option
+    return finalPromotion-(finalPromotion * maxPromotion/100 );
+  
+    
+  }
+
+  getFinalPrice(): number {
+    if (!this.selectedRoom) return 0;
+    
+    const basePrice = this.selectedRoom.chambre.prixchambre;
+    const optionPercent = this.selectedRoom.option?.percent || 0;
+    return this.calculateOptionPrice(basePrice, optionPercent);
+  }
+  getFinalPriceAfetrPromo(): number {
+    if (!this.selectedRoom) return 0;
+    
+    const basePrice = this.selectedRoom.chambre.prixchambre;
+    const optionPercent = this.selectedRoom.option?.percent || 0;
+    return this.calculateFinalPrice(basePrice, optionPercent);
+  }
+  getDiscountPercent(): number {
+    if (!this.selectedRoom) return this.getMaxPromotion();
+    
+    const maxPromotion = this.getMaxPromotion();
+   
+   
+    return maxPromotion
+  }
+
+  toggleRoomSelection(chambre: Chambre, option: Option | null = null): void {
+    this.selectedRoom = {
+      chambre: chambre,
+      option: option
+    };
   }
 
   getStars(count: number): any[] {
@@ -104,5 +174,33 @@ export class DescriptionComponent implements OnInit {
     const encodedAddress = encodeURIComponent(address);
     const url = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodedAddress}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  isOptionSelected(chambre: Chambre, option: Option | null): boolean {
+    if (!this.selectedRoom) return false;
+    return this.selectedRoom.chambre.id === chambre.id && 
+           ((!this.selectedRoom.option && !option) || 
+           (this.selectedRoom.option?.id === option?.id));
+  }
+  searchHotels(): void {
+    const queryParams: any = {};
+    
+    if (this.searchQuery) {
+      queryParams.search = this.searchQuery;
+    }
+    
+    if (this.checkInDate) {
+      queryParams.start = this.checkInDate;
+    }
+    
+    if (this.checkOutDate) {
+      queryParams.end = this.checkOutDate;
+    }
+    
+    if (this.priceLimit) {
+      queryParams.price = this.priceLimit;
+    }
+
+    this.router.navigate(['/Hotel_User'], { queryParams });
   }
 }

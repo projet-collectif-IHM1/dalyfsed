@@ -1,0 +1,121 @@
+<section class="bg-white dark:bg-gray-900">
+    <div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
+      <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+        {{ isEditMode ? 'Update Option' : 'Create New Option' }}
+      </h2>
+      <form [formGroup]="optionForm" (ngSubmit)="onSubmit()">
+        <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+          <!-- Option Type Field -->
+          <div class="form-group sm:col-span-2">
+            <label for="typeOption" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              Option Type
+            </label>
+            <input type="text" id="typeOption"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                   placeholder="Enter option type"
+                   formControlName="typeOption"
+                   [class.border-red-500]="optionForm.get('typeOption')?.invalid && optionForm.get('typeOption')?.touched">
+            
+            <div *ngIf="optionForm.get('typeOption')?.invalid && optionForm.get('typeOption')?.touched" 
+                 class="mt-1 text-sm text-red-600 dark:text-red-400">
+              <span *ngIf="optionForm.get('typeOption')?.errors?.['required']">
+                Option type is required
+              </span>
+            </div>
+          </div>
+  
+          <!-- Percentage Field -->
+          <div class="form-group">
+            <label for="percent" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              Percentage (%)
+            </label>
+            <input type="number" id="percent"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                   placeholder="Enter percentage"
+                   formControlName="percent"
+                   min="0" max="100" step="0.01"
+                   [class.border-red-500]="optionForm.get('percent')?.invalid && optionForm.get('percent')?.touched">
+            
+            <div *ngIf="optionForm.get('percent')?.invalid && optionForm.get('percent')?.touched" 
+                 class="mt-1 text-sm text-red-600 dark:text-red-400">
+              <span *ngIf="optionForm.get('percent')?.errors?.['required']">
+                Percentage is required
+              </span>
+              <span *ngIf="optionForm.get('percent')?.errors?.['min']">
+                Percentage must be at least 0
+              </span>
+              <span *ngIf="optionForm.get('percent')?.errors?.['max']">
+                Percentage cannot exceed 100
+              </span>
+            </div>
+          </div>
+  
+          <!-- Chambre Selection Field -->
+          <div class="form-group">
+            <label for="chambre_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              Chambre (with Hotel)
+            </label>
+            <select id="chambre_id"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    formControlName="chambre_id"
+                    [class.border-red-500]="optionForm.get('chambre_id')?.invalid && optionForm.get('chambre_id')?.touched">
+              <option value="">Select a chambre</option>
+              <option *ngFor="let chambre of chambres" [value]="chambre.id">
+                {{ chambre.typeChambre }} ({{ chambre.prixchambre }} dt) - {{ chambre.hotel?.nomHotel || 'No hotel' }}
+              </option>
+            </select>
+            
+            <div *ngIf="optionForm.get('chambre_id')?.invalid && optionForm.get('chambre_id')?.touched" 
+                 class="mt-1 text-sm text-red-600 dark:text-red-400">
+              <span *ngIf="optionForm.get('chambre_id')?.errors?.['required']">
+                Chambre selection is required
+              </span>
+            </div>
+  
+            <!-- Display current hotel when editing -->
+            <div *ngIf="isEditMode && optionForm.get('chambre_id')?.value" class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+              <span class="font-semibold">Current Hotel:</span> 
+              {{ getCurrentChambreHotel() }}
+            </div>
+          </div>
+        </div>
+  
+        <div class="flex items-center space-x-4">
+          <!-- Submit Button -->
+          <button type="submit" 
+                  class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  [disabled]="optionForm.invalid || isLoading">
+            <span *ngIf="isLoading" class="inline-flex items-center">
+              <svg class="w-4 h-4 mr-2 animate-spin" viewBox="0 0 24 24">
+                <path class="fill-current" d="M12 4V2A10 10 0 00 2 12h2a8 8 0 018-8z"></path>
+              </svg>
+              Processing...
+            </span>
+            <span *ngIf="!isLoading">
+              {{ isEditMode ? 'Update' : 'Create' }}
+            </span>
+          </button>
+  
+          <!-- Delete Button (only shown in edit mode) -->
+          <button *ngIf="isEditMode" 
+                  type="button" 
+                  (click)="onDelete()"
+                  class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                  [disabled]="isLoading">
+            <svg class="w-5 h-5 mr-1 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            Delete
+          </button>
+  
+          <!-- Cancel Button -->
+          <button type="button" 
+                  (click)="onCancel()"
+                  class="text-gray-600 inline-flex items-center hover:text-white border border-gray-600 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-900"
+                  [disabled]="isLoading">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>

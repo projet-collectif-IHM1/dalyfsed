@@ -1,51 +1,52 @@
-  <div class="relative  mt-20 max-w-[1080px]">
-    <!-- Bouton gauche -->
-    
-  
- 
-     
-      <!-- Conteneur du scroll -->
-      <div #scrollContainer class="overflow-x-hidden whitespace-nowrap flex space-x-9 scroll-smooth ">
-        <div *ngFor="let paye of payes" (click)="selectDestination(paye.id)" class=" cursor-pointer relative min-w-[320px] h-72 bg-white   overflow-hidden ">
-      
+<div class="relative mt-16 max-w-[1300px] mx-auto px-4">
+  <!-- Flèche gauche -->
+  <button (click)="scrollLeft()"
+          class="absolute top-1/2 -left-4 z-30 flex items-center justify-center w-10 h-10 -translate-y-1/2 bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 group">
+      <svg class="w-5 h-5 text-gray-700 group-hover:text-[#48A6A7] transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 1 1 5l4 4"/>
+      </svg>
+      <span class="sr-only">Previous</span>
+  </button>
+
+  <!-- Conteneur du scroll -->
+  <div #scrollContainer class="overflow-x-auto whitespace-nowrap flex space-x-6 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-6 px-1">
+      <div *ngFor="let paye of payes" (click)="selectDestination(paye.id)"
+           class="cursor-pointer relative min-w-[220px] md:min-w-[260px] h-64 md:h-72 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-500 group transform hover:-translate-y-1">
           
-          <!-- Image de l'hôtel -->
-          <div class="relative pb-40 shadow-sm   ">
-            <img [src]="paye.imagepaye" alt="Image de l'hôtel" class="w-96 h-72 object-cover rounded-md">
-
-    
-            <!-- Prix en haut à gauche -->
-            <div class="absolute top-2 left-60 text-white px-3 py-1 rounded-md text-sm bg-cyan-600 font-medium">
-              {{paye.nompaye}}
-            </div>
+          <!-- Conteneur d'image avec masque de flou dégradé -->
+          <div class="absolute inset-0 overflow-hidden rounded-xl">
+              <!-- Image principale nette -->
+              <img [src]="paye.imagepaye" alt="Image de {{paye.nompaye}}"
+                   class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
+              
+              <!-- Couche de flou dégradé -->
+              <div class="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-black/20 backdrop-blur-0 group-hover:backdrop-blur-[2px]">
+                  <div class="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-black/30"></div>
+              </div>
           </div>
-    
-        
+          
+          <!-- Overlay gradient pour assombrir le bas -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-xl"></div>
 
-           
-    
-      
+          <!-- Nom du pays avec soulignement moderne -->
+          <div class="absolute bottom-5 left-5 right-5">
+              <div class="inline-block">
+                  <p class="text-white font-medium text-xl tracking-tight drop-shadow-lg group-hover:text-[#C1D8C3] transition-colors duration-300">
+                      {{ paye.nompaye }}
+                      <span class="block h-0.5 bg-white/60 mt-1 scale-x-0 group-hover:scale-x-100 group-hover:bg-[#FFA725] origin-left transition-all duration-500 ease-out"></span>
+                  </p>
+                  <p *ngIf="paye.capitale" class="text-white/80 font-medium text-sm mt-1 drop-shadow-md group-hover:text-[#48A6A7]/90 transition-colors duration-300">{{ paye.capitale }}</p>
+              </div>
           </div>
-        </div>
       </div>
-  
+  </div>
 
-      <button  (click)="scrollLeft()" type="button" class="absolute top-0 left-10 start-0 z-30 flex items-center justify-center h-full px-4  pt-40 cursor-pointer group focus:outline-none" data-carousel-prev>
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-cyan-600 dark:bg-gray-800/30 group-hover:bg-cyan-700 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-            </svg>
-            <span class="sr-only">Previous</span>
-        </span>
-    </button>
-  
-    <!-- Bouton droit -->
-   
-    <button (click)="scrollRight()" type="button" class="absolute top-0 right-10 end-0 z-30 flex items-center justify-center h-full px-4  pt-40 cursor-pointer group focus:outline-none" data-carousel-next>
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-cyan-600 dark:bg-gray-800/30 group-hover:bg-cyan-700 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-            </svg>
-            <span class="sr-only">Next</span>
-        </span>
-    </button>
+  <!-- Flèche droite -->
+  <button (click)="scrollRight()"
+          class="absolute top-1/2 -right-4 z-30 flex items-center justify-center w-10 h-10 -translate-y-1/2 bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 group">
+      <svg class="w-5 h-5 text-gray-700 group-hover:text-[#48A6A7] transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="m1 9 4-4-4-4"/>
+      </svg>
+      <span class="sr-only">Next</span>
+  </button>
+</div>

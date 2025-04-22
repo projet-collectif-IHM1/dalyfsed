@@ -30,7 +30,7 @@ export class LoginComponent {
       next: (res) => {
         console.log("Connexion réussie", res);
         localStorage.setItem("token", res.token); // Stocker le token
-  
+        localStorage.setItem("user", res); 
         if (res.role === "admin") {
           this.router.navigate(['/Hotel']);
         } else {

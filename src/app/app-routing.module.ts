@@ -15,6 +15,13 @@ import { PayeAdminComponent } from './paye-admin/paye-admin.component';
 import { ReservationAdminComponent } from './reservation-admin/reservation-admin.component';
 import { DescriptionComponent } from './description/description.component';
 import { OmraComponent } from './omra/omra.component';
+import { AboutComponent } from './about/about.component';
+import { AvisAdminComponent } from './avis-admin/avis-admin.component';
+import { UserAdminComponent } from './user-admin/user-admin.component';
+import { OffreComponent } from './offre/offre.component';
+import { OffreFormComponent } from './offre-form/offre-form.component';
+import { OptionComponent } from './option/option.component';
+import { OptionFormComponent } from './option-form/option-form.component';
 
 const routes: Routes = [
   {path:'',
@@ -93,7 +100,41 @@ const routes: Routes = [
   {
     path: 'Hotel_User/description/:id',
     pathMatch: 'full',
-    component:DescriptionComponent  }
+    component:DescriptionComponent  },
+    {
+      path: 'About',
+      pathMatch: 'full',
+      component:AboutComponent  },
+      {
+        path: 'Avis',
+        pathMatch: 'full',
+        component:AvisAdminComponent  },
+        {
+          path: 'Utilisateur',
+          pathMatch: 'full',
+          component:UserAdminComponent  },
+          {
+            path: 'Offre',
+            pathMatch: 'full',
+            component:OffreComponent  },
+            {
+              path: 'createOffer',
+              pathMatch: 'full',
+              component:OffreFormComponent  },
+              {
+                path: 'Offre/edit/:id',
+                pathMatch: 'full',
+                component:OffreFormComponent  },
+                {
+                  path: 'option',
+                  pathMatch: 'full',
+                  component:OptionComponent  },
+                  {
+                    path: 'createOption',
+                    pathMatch: 'full',
+                    component:OptionFormComponent  }
+
+
 
 
 ];
