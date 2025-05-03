@@ -1,0 +1,43 @@
+/* Error Message Styling */
+.error-message {
+    color: #f44336; /* Rouge pour les erreurs */
+    font-size: 0.875rem; /* Taille du texte */
+    margin-top: -1rem; /* Espacement négatif pour éviter trop d'espace vide */
+    margin-bottom: 1rem; /* Espace en dessous du message */
+    text-align: center; /* Centrer le texte */
+    font-weight: 500; /* Gras léger */
+    animation: fadeIn 0.5s ease-in-out; /* Animation douce */
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Form Styling */
+  form {
+    max-width: 400px; /* Largeur maximale du formulaire */
+    margin: 0 auto; /* Centrage horizontal */
+  }
+  
+  input {
+    transition: border-color 0.3s ease-in-out; /* Transition fluide pour le focus */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 0.8rem 1rem; /* Espacement interne */
+  }
+  
+  input:focus {
+    border-color: #1e90ff; /* Couleur bleue au focus */
+    box-shadow: 0 0 8px rgba(30, 144, 255, 0.5); /* Ombre légère */
+  }
+  
+  
+  label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+  }

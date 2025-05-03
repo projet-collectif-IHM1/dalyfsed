@@ -69,6 +69,9 @@ import { ReservationFormComponent } from './reservation-form/reservation-form.co
 import { OptionComponent } from './option/option.component';
 import { OptionFormComponent } from './option-form/option-form.component';
 import { LogoutComponent } from './logout/logout.component';
+import { TunisiaComponent } from './tunisia/tunisia.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -108,7 +111,9 @@ import { LogoutComponent } from './logout/logout.component';
       ReservationFormComponent,
       OptionComponent,
       OptionFormComponent,
-      LogoutComponent, 
+      LogoutComponent,
+      TunisiaComponent,
+      DashboardComponent, 
       
       
   ],
@@ -161,6 +166,7 @@ import { LogoutComponent } from './logout/logout.component';
     MatDialogModule,
     ReactiveFormsModule,
     CommonModule,
+    NgChartsModule
   
 
   ],

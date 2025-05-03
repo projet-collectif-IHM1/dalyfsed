@@ -18,7 +18,7 @@
 </div>
 <div class="bg-slate-50">
 
-    <div class="bg-white shadow-lg mt-32 relative rounded-lg p-5 pl-8 ml-52 mr-52 flex items-center space-x-16 ">
+    <div class="bg-white shadow-lg mt-32 relative rounded-lg p-5 pl-8 ml-52 mr-52 flex items-center space-x-11 ">
         <!-- Destination -->
         <div class="flex flex-col">
             <label class="text-cyan-700 font-bold uppercase text-sm">Destination</label>
@@ -65,10 +65,16 @@
             <div class="flex items-center space-x-2 border-b border-gray-300 py-2">
                 <select [(ngModel)]="priceLimit" class="outline-none border-none text-gray-600">
                     <option value="">Any Price</option>
-                    <option value="100">100 DT</option>
-                    <option value="200">200 DT</option>
-                    <option value="300">300 DT</option>
-                    <option value="500">500 DT</option>
+                    <option value="100">100 DT to 200DT</option>
+                    <option value="200">200 DT to 300DT</option>
+                    <option value="300">300 DT to 400DT</option>
+                    <option value="300">400 DT to 500DT</option>
+                    <option value="500">500 DT to 600DT</option>
+                    <option value="600">600 DT to 700DT</option>
+                    <option value="700">700 DT to 800DT</option>
+                    <option value="800">800 DT to 900DT</option>
+                    <option value="900">900 DT to 1000DT</option>
+                    
                 </select>
             </div>
         </div>
@@ -144,7 +150,7 @@
             <img class="w-full object-cover h-[700px]" src="assets/images/bg_4.png" alt="hero">
    
         </div>
-        <div class="relative py-28 px-[124px] mx-auto max-w-screen-xl">
+        <div class="relative py-28 px-[65px] mx-auto max-w-screen-xl">
             
             <div class="text-center">
                 <p class="text-2xl font-medium mb-3 hurricane-regular1  text-cyan-700 dark:text-gray-200 mt-3">VoyageZen Provide Places</p>

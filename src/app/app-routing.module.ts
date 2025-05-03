@@ -22,6 +22,8 @@ import { OffreComponent } from './offre/offre.component';
 import { OffreFormComponent } from './offre-form/offre-form.component';
 import { OptionComponent } from './option/option.component';
 import { OptionFormComponent } from './option-form/option-form.component';
+import { TunisiaComponent } from './tunisia/tunisia.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {path:'',
@@ -132,7 +134,15 @@ const routes: Routes = [
                   {
                     path: 'createOption',
                     pathMatch: 'full',
-                    component:OptionFormComponent  }
+                    component:OptionFormComponent  },
+                    {
+                      path: 'Tunisia',
+                      pathMatch: 'full',
+                      component:TunisiaComponent  },
+                      {
+                        path: 'dashboard',
+                        pathMatch: 'full',
+                        component:DashboardComponent  }
 
 
 

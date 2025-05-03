@@ -7,7 +7,7 @@
         <svg class="w-3 h-3 me-2.5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
           <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
         </svg>
-        Accueil
+        Home
       </a>
     </li>
     <li>
@@ -15,7 +15,7 @@
         <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" fill="none" viewBox="0 0 6 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
         </svg>
-        <a routerLink="/hotels" class="ms-1 text-sm font-medium text-gray-500 hover:text-cyan-700">Hôtels</a>
+        <a routerLink="/Hotel_User" class="ms-1 text-sm font-medium text-gray-500 hover:text-cyan-700">Hôtels</a>
       </div>
     </li>
     <li aria-current="page">
@@ -30,66 +30,72 @@
 </nav>
 
 <div class="flex px-4 md:px-16 lg:px-36">
-  <div *ngIf="!isLoading && hotel" class="w-full flex flex-col gap-8 md:gap-10">
+  <div *ngIf="!isLoading && hotel" class="w-full flex flex-col gap-2 md:gap-4">
     <!-- Title and rating -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-      <div class="space-y-2">
-        <P class="text-3xl md:text-4xl font-medium text-cyan-800">{{ hotel.nomHotel }}</P>
-        <div class="flex items-center gap-2 text-gray-600">
-          <mat-icon class="text-amber-500">location_on</mat-icon>
-          <p>{{ hotel.adresse }}</p>
+      <div class="">
+        <P class="text-3xl md:text-4xl font-medium text-cyan-800">{{ hotel.nomHotel }} <ng-container class="text-2xl" *ngFor="let star of getStars(hotel.classement)">
+            <mat-icon class="text-amber-400 text-base">star</mat-icon>
+          </ng-container></P>
+        <div class="flex items-center  text-gray-600 text-xl">
+          <mat-icon class="text-amber-500 ">location_on</mat-icon>
+          <p  class="pt-4 text-base font-medium">{{ hotel.adresse }}</p>
         </div>
+      
       </div>
       
-      <div class="flex items-center gap-4">
-        <div class="bg-cyan-100 text-cyan-800 px-4 py-2 rounded-lg">
-          <div class="flex items-center">
-            <span class="text-xl font-bold mr-1">{{ hotel.classement }}</span>
-            <span class="text-amber-500">/5</span>
-          </div>
-        </div>
-      </div>
+   
     </div>
 
-    <!-- Image Gallery -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
-      <!-- Main image -->
-      <div class="md:col-span-2 row-span-2">
-        <img [src]="hotel.imageHotel[0]" 
-             [alt]="'Image principale de ' + hotel.nomHotel" 
-             class="w-full h-full object-cover shadow-md">
-      </div>
-      
-      <!-- Secondary images -->
-      <div class="md:col-span-1">
-        <img [src]="hotel.imageHotel[1]" 
-             [alt]="'Image secondaire de ' + hotel.nomHotel" 
-             class="w-full h-full object-cover shadow-md">
-      </div>
-      
-      <div class="md:col-span-1">
-        <img [src]="hotel.imageHotel[2]" 
-             [alt]="'Image secondaire de ' + hotel.nomHotel" 
-             class="w-full h-full object-cover shadow-md">
-      </div>
-      
-      <div class="md:col-span-1">
-        <img [src]="hotel.imageHotel[3]" 
-             [alt]="'Image secondaire de ' + hotel.nomHotel" 
-             class="w-full h-full object-cover shadow-md">
-      </div>
-      
-      <div class="md:col-span-1 relative">
-        <img [src]="hotel.imageHotel[4]" 
-             [alt]="'Image secondaire de ' + hotel.nomHotel" 
-             class="w-full h-full object-cover shadow-md">
-        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <button class="text-white font-bold bg-cyan-600 hover:bg-cyan-700 px-4 py-2 rounded-lg transition-colors">
-            +{{ hotel.imageHotel.length - 5 }} photos
-          </button>
-        </div>
-      </div>
+<!-- Image Gallery -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-2 rounded-r-lg rounded-t-lg">
+  <!-- Main image -->
+  <div class="md:col-span-2 row-span-2  overflow-hidden">
+    <img 
+      [src]="hotel.imageHotel[0]" 
+      [alt]="'Image principale de ' + hotel.nomHotel" 
+      class="w-full h-full object-cover shadow-md rounded-l-xl "
+    >
+  </div>
+  
+  <!-- Secondary images -->
+  <div class="md:col-span-1 overflow-hidden ">
+    <img 
+      [src]="hotel.imageHotel[1]" 
+      [alt]="'Image secondaire de ' + hotel.nomHotel" 
+      class="w-full h-full object-cover shadow-md"
+    >
+  </div>
+  
+  <div class="md:col-span-1 overflow-hidden rounded-tr-xl">
+    <img 
+      [src]="hotel.imageHotel[2] " 
+      [alt]="'Image secondaire de ' + hotel.nomHotel" 
+      class="w-full h-full object-cover shadow-md"
+    >
+  </div>
+  
+  <div class="md:col-span-1 overflow-hidden ">
+    <img 
+      [src]="hotel.imageHotel[3]" 
+      [alt]="'Image secondaire de ' + hotel.nomHotel" 
+      class="w-full h-full object-cover shadow-md"
+    >
+  </div>
+  
+  <div class="md:col-span-1 relative overflow-hidden  rounded-br-xl">
+    <img 
+      [src]="hotel.imageHotel[4]" 
+      [alt]="'Image secondaire de ' + hotel.nomHotel" 
+      class="w-full h-full object-cover shadow-md "
+    >
+    <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+      <button class="text-white font-medium bg-cyan-600 hover:bg-cyan-800 px-4 py-2 rounded-lg transition-colors">
+        +{{ hotel.imageHotel.length - 5 }} photos
+      </button>
     </div>
+  </div>
+</div>
     
 
     <div class="bg-cyan-50/20 border-2 border-cyan-600/85 shadow-md relative rounded-lg p-5 w-full flex items-center space-x-10">
@@ -136,10 +142,11 @@
       </button>
   </div>
   <div>
-      <p class="">Choose your rooms</p>
+    
   </div>
       <div>
-      <p class="">Choose your rooms</p>
+        <P class="text-2xl font-semibold text-cyan-700 mb-4 pb-2 pt-10">CHOSE YOUR ROOMS</P>
+        <div class="h-1.5 w-20 bg-amber-400 rounded-full mt-2 mb-7"></div>
     </div>
     <!-- Rooms and Booking Summary Section -->
     <div class="flex flex-col lg:flex-row gap-6">
@@ -230,8 +237,8 @@
               Taxes and fees included
             </p>
             
-            <button class="w-full mt-6 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
-              Réserver maintenant
+            <button   onclick="document.getElementById('reservationModal').classList.remove('hidden')"  class="w-full mt-6 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+              Book now
             </button>
             
             <div class="text-green-600 underline mt-3 text-sm">
@@ -272,7 +279,7 @@
     </div>
     
     <!-- Hotel sections -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-16 pb-16">
       <!-- Description -->
       <div class="lg:col-span-2 space-y-8">
         <section>
@@ -313,16 +320,16 @@
           <div class="h-1.5 w-20 bg-amber-400 rounded-full mt-2 mb-2"></div>
           <div class="bg-white p-4 rounded-xl shadow-md mt-2">
             <iframe 
-              [src]="getSafeMapUrl(hotel.adresse)" 
-              class="w-full h-80 rounded-lg"
-              style="border:0;" 
-              allowfullscreen 
-              loading="lazy" 
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+            [src]="getSafeMapUrl(hotel.adresse)" 
+            class="w-full h-80 rounded-lg"
+            style="border:0;" 
+            allowfullscreen 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
             <div class="mt-4 flex items-center gap-2">
               <mat-icon class="text-amber-500">directions</mat-icon>
-              <p class="text-gray-600">À {{ hotel.distanceCentreVille }} du centre-ville</p>
+              <p class="text-gray-600">In {{ hotel.adresse }} the city center</p>
             </div>
           </div>
         </div>
@@ -341,49 +348,66 @@
   id="reservationModal"
   class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"
 >
-  <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-16 relative">
+  <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-5 relative">
     <!-- Bouton fermer -->
     <button
       onclick="document.getElementById('reservationModal').classList.add('hidden')"
-      class="absolute top-2 right-2 text-gray-400 hover:text-gray-700"
+      class="absolute top-2 right-2 text-gray-700 hover:text-gray-800 p-3"
     >
       ✕
     </button>
-
-    <h3 class="text-xl font-bold text-gray-800 mb-4">Finaliser la réservation</h3>
-
-    <!-- Contenu de la réservation -->
-    <form class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Nom complet</label>
-        <input
-          type="text"
-          class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
-        />
+ <!-- Contenu de la réservation -->
+ <div *ngIf="selectedRoom" class="space-y-4">
+  <!-- Image et nom de l'hôtel -->
+  <div class="flex items-start gap-4">
+    <img 
+      [src]="hotel.imageHotel[0]" 
+      [alt]="hotel.nomHotel" 
+      class="w-24 h-24 object-cover rounded-lg"
+    >
+    <div>
+      <h4 class="font-semibold text-4xl text-cyan-700">{{ hotel.nomHotel }}</h4>
+      <div class="flex items-center text-4xl text-amber-500">
+        <ng-container *ngFor="let star of getStars(hotel.classement)">
+          <mat-icon class="text-base">star</mat-icon>
+        </ng-container>
       </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
-        />
+      <p class="text-sm text-gray-600">{{ hotel.adresse }}</p>
+    </div>
+  </div>
+  <div class="border-t border-gray-200 pt-4">
+    <p class="font-medium text-gray-800 mb-2">Your room</p>
+    <div class="bg-gray-50 p-3 rounded-lg">
+      <p class="font-medium">{{ selectedRoom.chambre.typeChambre }}</p>
+      <p class="text-sm text-gray-600">{{ selectedRoom.option?.typeOption || 'Option standard' }}</p>
+      <div class="flex justify-between items-center mt-2">
+        <span class="text-sm">Total price:</span>
+        <span class="font-bold text-lg text-cyan-700">
+          {{ getFinalPriceAfetrPromo() | number:'1.2-2' }} TND
+        </span>
       </div>
-
-      <div>
-        <label class="block text-sm font-medium text-gray-700">Date de réservation</label>
-        <input
-          type="date"
-          class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
-        />
+      <div *ngIf="selectedRoom.option?.percent" class="flex justify-between text-sm text-red-700">
+        <div class="flex gap-3 pt-4">
+       
+          <button
+      onclick="document.getElementById('reservationModal').classList.add('hidden')"
+      class="flex-1 py-2.5 border px-7 border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition"
+    >
+    Cancel
+    </button>
+          <button routerLink="/"
+            (click)="confirmReservation()"
+            class="flex-1 py-2.5 px-7 bg-cyan-700 hover:bg-cyan-800 text-white rounded-lg font-medium text-xs transition"
+          >
+          Confirm
+          </button>
+        </div>
       </div>
+    
+      </div>
+    </div>
+  </div>
 
-      <button
-        type="submit"
-        class="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg font-semibold transition"
-      >
-        Confirmer
-      </button>
-    </form>
+  
   </div>
 </div>

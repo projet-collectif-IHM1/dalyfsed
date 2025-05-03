@@ -9,13 +9,14 @@ import { AvisService } from '../Services/avis.service';
 })
 export class AboutComponent {
   @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef;
-  
+  rating: number = 0
   avis: any[] = [];
   isLoading: boolean = true;
   form: FormGroup;
   nomUtilisateur: string ="";
 
   constructor(private fb: FormBuilder, private myService: AvisService) {
+    
     this.form = this.fb.group({
       note: [null, [Validators.required, Validators.min(1), Validators.max(5)]],
       commentaire: ['', Validators.required],

@@ -58,6 +58,7 @@ export class DescriptionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.currentId = this.route.snapshot.paramMap.get('id');
     if (this.currentId) {
       this.loadHotelData();
@@ -119,7 +120,7 @@ export class DescriptionComponent implements OnInit {
   calculateOptionPrice(prixBase: number, optionPercent: number = 0): number {
     const maxPromotion = this.getMaxPromotion();
     // Appliquer d'abord la promotion de l'offre, puis celle de l'option
-    const prixPromo = prixBase+(prixBase * optionPercent/100 );
+    const prixPromo = prixBase+(prixBase * optionPercent );
     return prixPromo
     
   }
@@ -171,10 +172,10 @@ export class DescriptionComponent implements OnInit {
   }
 
   getSafeMapUrl(address: string): SafeUrl {
-    const encodedAddress = encodeURIComponent(address);
-    const url = `https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodedAddress}`;
+    const encodedAddress = encodeURIComponent(address || 'Tunis');
+    const url = `https://maps.google.com/maps?width=100%&height=600&hl=fr&q=${encodedAddress}&ie=UTF8&t=&z=14&iwloc=B&output=embed`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-  }
+}
 
   isOptionSelected(chambre: Chambre, option: Option | null): boolean {
     if (!this.selectedRoom) return false;
@@ -203,4 +204,24 @@ export class DescriptionComponent implements OnInit {
 
     this.router.navigate(['/Hotel_User'], { queryParams });
   }
+  confirmReservation() {
+    // Ici vous pouvez implémenter la logique de confirmation
+    console.log('Réservation confirmée', {
+      hotel: this.hotel,
+      room: this.selectedRoom,
+      checkIn: this.checkInDate,
+      checkOut: this.checkOutDate
+    });
+  
+    // Fermer la modale après confirmation
+    const modalElement = document.getElementById('reservationModal');
+    if (modalElement) {
+      modalElement.classList.add('hidden');
+    }
+    
+    
+    // Optionnel: Afficher un message de succès
+    // this.snackBar.open('Réservation confirmée avec succès!', 'Fermer', { duration: 3000 });
+  }
+  
 }

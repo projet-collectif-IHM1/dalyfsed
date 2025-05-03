@@ -29,7 +29,9 @@
               "src/styles.css",
               "src/app/shared/header/header.component.css"
             ],
-            "scripts": [],
+            "scripts": [
+              
+            ],
             "allowedCommonJsDependencies": ["bezier-easing"]
           },
           "configurations": {
@@ -104,7 +106,8 @@
 
             ],
             "scripts": [
-  "node_modules/flowbite/dist/flowbite.min.js"
+  "node_modules/flowbite/dist/flowbite.min.js",
+  "node_modules/chart.js/dist/chart.umd.js"
 ]
 
           }
